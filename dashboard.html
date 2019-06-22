@@ -14,8 +14,8 @@
         <div class="container">
             <canvas id="myChart"> </canvas>
         </div>
-        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-
+        <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
+        <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
 
         <!-- JAVASCRIPT -->
         
@@ -37,13 +37,14 @@
                 result = JSON.parse(e.target.result);
                 var formatted = JSON.stringify(result);
                 document.getElementById('result').value = formatted;
-                drawBarChart();//calls function draw barChart
+                drawColumnChart();//calls function draw ColumnChart
+                drawBarGraph(); // calls function draw BarGraph
             }
             fr.readAsText(files.item(0));
         };
 
-        //bar chart
-        function drawBarChart() {
+        //column chart
+        function drawColumnChart() {
             //gets the burgersales data
             var arrayBurger_sales = []
 
@@ -51,7 +52,7 @@
                 arrayBurger_sales.push(Object.values(result.burger_sales)[i]);
             };
 
-        	var chart = new CanvasJS.Chart("chartContainer", {
+        	var chart = new CanvasJS.Chart("chartColumnContainer", {
         		title:{
         			text: "Burger Sales"              
         		},
@@ -63,6 +64,37 @@
         				{ label: "Krusty Combo",  y: arrayBurger_sales[0]},
         				{ label: "Krusty Deluxe", y: arrayBurger_sales[1]},
         				{ label: "Krabby Pattie", y: arrayBurger_sales[2]}
+        			]
+        		}
+        		]
+        	});
+        	chart.render();
+        }
+        //bar Graph
+        function drawBarGraph() {
+            //gets the species_sales data
+            var arraySpecies_sales = []
+
+            for(let i = 0; i < Object.keys(result.species_sales).length; i++){
+                arraySpecies_sales.push(Object.values(result.species_sales)[i]);
+            };
+
+        	var chart = new CanvasJS.Chart("chartBarContainer", {
+        		title:{
+        			text: "Species Sales"              
+        		},
+        		data: [              
+        		{
+        			// Change type to "doughnut", "line", "splineArea", etc.
+        			type: "bar",
+        			dataPoints: [
+        				{ label: "leatherback turtle",  y: arraySpecies_sales[0]},
+        				{ label: "salmon", y: arraySpecies_sales[1]},
+                        { label: "seahorse", y: arraySpecies_sales[2]},
+                        { label: "coral", y: arraySpecies_sales[3]},
+                        { label: "giant clam", y: arraySpecies_sales[4]},
+                        { label: "gray whale", y: arraySpecies_sales[5]},
+                        { label: "sea lion", y: arraySpecies_sales[6]}
         			]
         		}
         		]
