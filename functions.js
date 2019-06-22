@@ -31,18 +31,3 @@ for(let i = 0; i < Object.keys(result.burger_sales).length; i++){
 };
 
 console.log(arrayBurger_sales)
-
-let myChart = document.getElementById('myChart').getContext('2d');
-let massPopChart = new CharacterData(myChart,{
-    type: 'bar',
-    data: {
-        labels:['Krusty Combo', 'Krusty Deluxe', 'Krabby Pattie'],
-        datasets:[{
-            label:'burger_sales',
-            data: [
-                arrayBurger_sales;
-            ]
-        }]
-    },
-    options:{}
-});
