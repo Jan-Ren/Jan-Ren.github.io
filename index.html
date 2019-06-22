@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <style>
+            div.container{
+                font-size: 30px;
+                width: 400px;
+                height: 400px;
+                padding: 20px;
+                background-color: yellowgreen;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+
+        <script type = "text/javascript">
+            function checker(){
+                var uname = document.getElementById("username").value;
+                var password = document.getElementById("password").value;
+                if (uname== "admin" && password== "p@ssword") {
+                    window.location.href = "dashboard.html";
+                    alert("Yehey");
+                    return;
+                }else{
+                    alert("Incorrect username or password");
+                    return;
+                }
+            }
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="title"> Welcome to Kursty Krab </div>
+            <br>
+            <form class="login" onsubmit="return checker()">
+                username : <input type= "text" id="username">
+                <br>
+                password : <input type= "password" id="password">
+                <br>
+                <input type = "submit" value= "Login">
+            </form>
+        </div>
+    </body>
+</html>
