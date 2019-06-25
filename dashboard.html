@@ -16,14 +16,13 @@
         </div>
         <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
         <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
-
         <!-- JAVASCRIPT -->
         
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <script type="text/javascript">
         
         var result; // GLOBAL VARIABLE OF THE JSON OBJECT
-
+        var tablecr;
         //This reads the uploaded jsonfile
         document.getElementById('import').onclick = function() {
             var files = document.getElementById('selectFiles').files;
@@ -33,8 +32,11 @@
             }
             var fr = new FileReader();
             fr.onload = function(e) { 
+                console.log("Hello world");
                 console.log(e);
+                
                 result = JSON.parse(e.target.result);
+                var chen = Object.values(result.sales);
                 var formatted = JSON.stringify(result);
                 document.getElementById('result').value = formatted;
                 drawColumnChart();//calls function draw ColumnChart
@@ -48,6 +50,7 @@
                 console.log(array[2].species)
                 */
             }
+            
             fr.readAsText(files.item(0));
         };
 
@@ -55,11 +58,11 @@
         function drawColumnChart() {
             //gets the burgersales data
             var arrayBurger_sales = []
-
+         
             for(let i = 0; i < Object.keys(result.burger_sales).length; i++){
                 arrayBurger_sales.push(Object.values(result.burger_sales)[i]);
+                
             };
-
         	var chart = new CanvasJS.Chart("chartColumnContainer", {
         		title:{
         			text: "Burger Sales"              
@@ -68,6 +71,7 @@
         		{
         			// Change type to "doughnut", "line", "splineArea", etc.
         			type: "column",
+                   
         			dataPoints: [
         				{ label: "Krusty Combo",  y: arrayBurger_sales[0]},
         				{ label: "Krusty Deluxe", y: arrayBurger_sales[1]},
@@ -109,6 +113,27 @@
         	});
         	chart.render();
         }
+        function drawTable() {
+            console.log("Table");
+            var tbl = document.getElementById("tbler");   
+            var arr2 = [];  //calls an array variable
+            for (let i = 0; i < Object.keys(result.sales).length; i++) {
+               arr2.push(Object.values(result.sales)[i]);   //places the array data from the sales array 
+            }
+            console.log("Checker " + arr2.length);
+            for (let j = 0; j < arr2.length; j++) {
+             var row = tbl.insertRow();             //for every loop, a row will be initialized
+                var cel1 = row.insertCell();        //adder of a cell in each column
+                var cel2 = row.insertCell();
+                var cel3 = row.insertCell();
+                
+                cel1.innerHTML = arr2[j].datetime;  //places the string from the array according to the specific variable
+                cel2.innerHTML = arr2[j].burger;
+                cel3.innerHTML = arr2[j].species;
+        }
+         
+        }
         </script>
+        
     </body>
 </html>
