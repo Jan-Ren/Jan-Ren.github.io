@@ -14,16 +14,25 @@
         <div class="container">
             <canvas id="myChart"> </canvas>
         </div>
-        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-
-
+        <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
+        <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
+        <div id = "tableofsales">
+            <table align = "center" border = 1px id = "tbler">
+                <tr>
+                    <th>Date</th>
+                    <th>Burger</th>
+                    <th>Species</th>
+                    
+                </tr>
+            </table>
+        </div>
         <!-- JAVASCRIPT -->
         
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <script type="text/javascript">
         
         var result; // GLOBAL VARIABLE OF THE JSON OBJECT
-
+        var tablecr;
         //This reads the uploaded jsonfile
         document.getElementById('import').onclick = function() {
             var files = document.getElementById('selectFiles').files;
@@ -33,25 +42,46 @@
             }
             var fr = new FileReader();
             fr.onload = function(e) { 
+                console.log("Hello world");
                 console.log(e);
+                
                 result = JSON.parse(e.target.result);
+                var chen = Object.values(result.sales);
                 var formatted = JSON.stringify(result);
                 document.getElementById('result').value = formatted;
-                drawBarChart();//calls function draw barChart
+                drawColumnChart();//calls function draw ColumnChart
+                drawBarGraph(); // calls function draw BarGraph
+                drawTable();    //calls function table
+                
+                
+                console.log(Object.values(result.sales)[0]);
+                
+                console.log(Object.values(chen).length);
+                
+                var array = [];
+                
+                for (let i = 0; i < Object.keys(result.sales).length; i++) {
+                    array.push(Object.values(result.sales)[i]);
+                }
+                
+                console.log(array[2].burger);
+                
             }
+            
             fr.readAsText(files.item(0));
         };
 
-        //bar chart
-        function drawBarChart() {
+        //column chart
+        function drawColumnChart() {
             //gets the burgersales data
             var arrayBurger_sales = []
-
+         
             for(let i = 0; i < Object.keys(result.burger_sales).length; i++){
                 arrayBurger_sales.push(Object.values(result.burger_sales)[i]);
+                
             };
-
-        	var chart = new CanvasJS.Chart("chartContainer", {
+            console.log("Check " + Object.values(result)[0]);
+        	var chart = new CanvasJS.Chart("chartColumnContainer", {
         		title:{
         			text: "Burger Sales"              
         		},
@@ -59,6 +89,7 @@
         		{
         			// Change type to "doughnut", "line", "splineArea", etc.
         			type: "column",
+                   
         			dataPoints: [
         				{ label: "Krusty Combo",  y: arrayBurger_sales[0]},
         				{ label: "Krusty Deluxe", y: arrayBurger_sales[1]},
@@ -69,6 +100,58 @@
         	});
         	chart.render();
         }
+        //bar Graph
+        function drawBarGraph() {
+            //gets the species_sales data
+            var arraySpecies_sales = []
+            
+            for(let i = 0; i < Object.keys(result.species_sales).length; i++){
+                arraySpecies_sales.push(Object.values(result.species_sales)[i]);
+            };
+            
+        	var chart = new CanvasJS.Chart("chartBarContainer", {
+        		title:{
+        			text: "Species Sales"              
+        		},
+        		data: [              
+        		{
+        			// Change type to "doughnut", "line", "splineArea", etc.
+        			type: "bar",
+        			dataPoints: [
+        				{ label: "leatherback turtle",  y: arraySpecies_sales[0]},
+        				{ label: "salmon", y: arraySpecies_sales[1]},
+                        { label: "seahorse", y: arraySpecies_sales[2]},
+                        { label: "coral", y: arraySpecies_sales[3]},
+                        { label: "giant clam", y: arraySpecies_sales[4]},
+                        { label: "gray whale", y: arraySpecies_sales[5]},
+                        { label: "sea lion", y: arraySpecies_sales[6]}
+        			]
+        		}
+        		]
+        	});
+        	chart.render();
+        }
+        function drawTable() {
+            console.log("Table");
+            var tbl = document.getElementById("tbler");   
+            var arr2 = [];  //calls an array variable
+            for (let i = 0; i < Object.keys(result.sales).length; i++) {
+               arr2.push(Object.values(result.sales)[i]);   //places the array data from the sales array 
+            }
+            console.log("Checker " + arr2.length);
+            for (let j = 0; j < arr2.length; j++) {
+             var row = tbl.insertRow();             //for every loop, a row will be initialized
+                var cel1 = row.insertCell();        //adder of a cell in each column
+                var cel2 = row.insertCell();
+                var cel3 = row.insertCell();
+                
+                cel1.innerHTML = arr2[j].datetime;  //places the string from the array according to the specific variable
+                cel2.innerHTML = arr2[j].burger;
+                cel3.innerHTML = arr2[j].species;
+        }
+         
+        }
         </script>
+        
     </body>
 </html>
