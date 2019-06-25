@@ -16,6 +16,16 @@
         </div>
         <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
         <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
+        <div id = "tableofsales">
+            <table align = "center" border = 1px id = "tbler">
+                <tr>
+                    <th>Date</th>
+                    <th>Burger</th>
+                    <th>Species</th>
+                    
+                </tr>
+            </table>
+        </div>
         <!-- JAVASCRIPT -->
         
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -41,14 +51,21 @@
                 document.getElementById('result').value = formatted;
                 drawColumnChart();//calls function draw ColumnChart
                 drawBarGraph(); // calls function draw BarGraph
-                // getting the sales data (example)
-                /*
-                var array =[]
-                for(let i = 0; i < Object.keys(result.sales).length; i++){
+                drawTable();    //calls function table
+                
+                
+                console.log(Object.values(result.sales)[0]);
+                
+                console.log(Object.values(chen).length);
+                
+                var array = [];
+                
+                for (let i = 0; i < Object.keys(result.sales).length; i++) {
                     array.push(Object.values(result.sales)[i]);
-                };
-                console.log(array[2].species)
-                */
+                }
+                
+                console.log(array[2].burger);
+                
             }
             
             fr.readAsText(files.item(0));
@@ -63,6 +80,7 @@
                 arrayBurger_sales.push(Object.values(result.burger_sales)[i]);
                 
             };
+            console.log("Check " + Object.values(result)[0]);
         	var chart = new CanvasJS.Chart("chartColumnContainer", {
         		title:{
         			text: "Burger Sales"              
@@ -86,11 +104,11 @@
         function drawBarGraph() {
             //gets the species_sales data
             var arraySpecies_sales = []
-
+            
             for(let i = 0; i < Object.keys(result.species_sales).length; i++){
                 arraySpecies_sales.push(Object.values(result.species_sales)[i]);
             };
-
+            
         	var chart = new CanvasJS.Chart("chartBarContainer", {
         		title:{
         			text: "Species Sales"              
