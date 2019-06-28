@@ -1,22 +1,32 @@
 <html>
     <head>
-            <meta charset="utf-8"/>
+        <meta charset="utf-8"/>
+        <style>
+
+        </style>
     </head>
     <body>
-        <input type="file" id="selectFiles" value="Import" /><br />
-        <button id="import">Import</button>
-        <textarea id="result">
-  
-        </textarea>
+        <div class= "menu">
+            <li>
+                <input type="file" id="selectFiles" value="Import" /><br />
+                <button id="import">Import</button>
+            </li>
+            <li>
+                <!--Put here your filters, just add another li's if you have more filters-->
+            </li>
+        </div>
 
         <br>
 
-        <div class="container">
-            <canvas id="myChart"> </canvas>
+        <div class= "charts">
+            <div id ="chartLineContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>></div>
+            <div id ="chartLineContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>></div>
+            <div id ="chartLineContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>></div>
+            <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
+            <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
         </div>
-        <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
-        <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
-        <div id = "tableofsales">
+
+        <div id= "tableofsales">
             <table align = "center" border = 1px id = "tbler">
                 <tr>
                     <th>Date</th>
@@ -26,6 +36,7 @@
                 </tr>
             </table>
         </div>
+        
         <!-- JAVASCRIPT -->
         
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -47,17 +58,20 @@
                 
                 result = JSON.parse(e.target.result);
                 var chen = Object.values(result.sales);
-                var formatted = JSON.stringify(result);
-                document.getElementById('result').value = formatted;
-                drawColumnChart();//calls function draw ColumnChart
-                drawBarGraph(); // calls function draw BarGraph
+                drawColumnChart(getBurgerSales());//calls function draw ColumnChart
+                drawBarGraph(getSpeciesSales()); // calls function draw BarGraph
+                drawLineChartKrabbyPattie(getKrabbyPattieSpecie())// calls function Line Graph
+                drawLineChartKrabbyDeluxe(getKrabbyDeluxeSpecie())// calls function Line Graph
+                drawLineChartKrabbyCombo(getKrabbyComboSpecie())// calls function Line Graph
                 drawTable();    //calls function table
+
+                //var sample = Object.values(result.burger_by_species)[0];
+            
+                //console.log(Object.values(sample)[0])
+                //console.log(Object.values(result.sales)[0]);
                 
-                
-                console.log(Object.values(result.sales)[0]);
-                
-                console.log(Object.values(chen).length);
-                
+                //console.log(Object.values(chen).length);
+                /*
                 var array = [];
                 
                 for (let i = 0; i < Object.keys(result.sales).length; i++) {
@@ -65,21 +79,57 @@
                 }
                 
                 console.log(array[2].burger);
-                
+                */
             }
             
             fr.readAsText(files.item(0));
         };
-
-        //column chart
-        function drawColumnChart() {
-            //gets the burgersales data
+        //gets the burgersales data
+        function getBurgerSales(){
+            
             var arrayBurger_sales = []
          
             for(let i = 0; i < Object.keys(result.burger_sales).length; i++){
                 arrayBurger_sales.push(Object.values(result.burger_sales)[i]);
                 
             };
+
+            return arrayBurger_sales;
+        }
+        //gets the species sales data
+        function getSpeciesSales(){
+            
+            var arraySpecies_sales = []
+            
+            for(let i = 0; i < Object.keys(result.species_sales).length; i++){
+                arraySpecies_sales.push(Object.values(result.species_sales)[i]);
+            };
+
+            return arraySpecies_sales;
+        }
+        //gets the burgers by species data (KRABBY PATTIE)
+        function getKrabbyPattieSpecie(){
+            
+            var krabbypattie = Object.values(result.burger_by_species)[0];
+            
+            return krabbypattie;
+        }
+        //gets the burgers by species data (DELUXE)
+        function getKrabbyDeluxeSpecie(){
+            
+            var krabbydeluxe = Object.values(result.burger_by_species)[1];
+            
+            return krabbydeluxe;
+        }
+        //gets the burgers by species data (COMBO)
+        function getKrabbyComboSpecie(){
+            
+            var krabbycombo= Object.values(result.burger_by_species)[2];
+            
+            return krabbycombo;
+        }
+        //column chart
+        function drawColumnChart(array) {
             console.log("Check " + Object.values(result)[0]);
         	var chart = new CanvasJS.Chart("chartColumnContainer", {
         		title:{
@@ -91,24 +141,99 @@
         			type: "column",
                    
         			dataPoints: [
-        				{ label: "Krusty Combo",  y: arrayBurger_sales[0]},
-        				{ label: "Krusty Deluxe", y: arrayBurger_sales[1]},
-        				{ label: "Krabby Pattie", y: arrayBurger_sales[2]}
+        				{ label: "Krusty Combo",  y: array[0]},
+        				{ label: "Krusty Deluxe", y: array[1]},
+        				{ label: "Krabby Pattie", y: array[2]}
         			]
         		}
         		]
         	});
         	chart.render();
         }
+        //lineChart(Krabby Pattie)
+        function drawLineChartKrabbyPattie(array) {
+
+            console.log("Check " + Object.values(result)[0]);
+        	var chart = new CanvasJS.Chart("chartLineContainerKrabbyPattie", {
+        		title:{
+        			text: "Krabby Pattie Sales by Species"              
+        		},
+        		data: [              
+        		{
+        			// Change type to "doughnut", "line", "splineArea", etc.
+        			type: "line",
+                   
+        			dataPoints: [
+        				{ label: "leatherback turtle",  y: Object.values(array)[0]},
+        				{ label: "salmon", y: Object.values(array)[1]},
+                        { label: "seahorse", y: Object.values(array)[2]},
+                        { label: "coral", y: Object.values(array)[3]},
+                        { label: "giant clam", y: Object.values(array)[4]},
+                        { label: "gray whale", y: Object.values(array)[5]},
+        				{ label: "sea lion", y: Object.values(array)[6]}
+        			]
+        		}
+        		]
+        	});
+        	chart.render();
+        }
+        //lineChart(Krabby Deluxe)
+        function drawLineChartKrabbyDeluxe(array) {
+
+            console.log("Check " + Object.values(result)[0]);
+            var chart = new CanvasJS.Chart("chartLineContainerKrabbyDeluxe", {
+                title:{
+                    text: "Krabby Deluxe Sales by Species"              
+                },
+                data: [              
+                {
+                    // Change type to "doughnut", "line", "splineArea", etc.
+                    type: "line",
+                
+                    dataPoints: [
+                        { label: "leatherback turtle",  y: Object.values(array)[0]},
+                        { label: "salmon", y: Object.values(array)[1]},
+                        { label: "seahorse", y: Object.values(array)[2]},
+                        { label: "coral", y: Object.values(array)[3]},
+                        { label: "giant clam", y: Object.values(array)[4]},
+                        { label: "gray whale", y: Object.values(array)[5]},
+                        { label: "sea lion", y: Object.values(array)[6]}
+                    ]
+                }
+                ]
+            });
+            chart.render();
+        }
+        //lineChart(Krabby Combo)
+        function drawLineChartKrabbyCombo(array) {
+                    
+            console.log("Check " + Object.values(result)[0]);
+            var chart = new CanvasJS.Chart("chartLineContainerKrabbyCombo", {
+                title:{
+                    text: "Krabby Combo Sales by Species"              
+                },
+                data: [              
+                {
+                    // Change type to "doughnut", "line", "splineArea", etc.
+                    type: "line",
+                
+                    dataPoints: [
+                        { label: "leatherback turtle",  y: Object.values(array)[0]},
+                        { label: "salmon", y: Object.values(array)[1]},
+                        { label: "seahorse", y: Object.values(array)[2]},
+                        { label: "coral", y: Object.values(array)[3]},
+                        { label: "giant clam", y: Object.values(array)[4]},
+                        { label: "gray whale", y: Object.values(array)[5]},
+                        { label: "sea lion", y: Object.values(array)[6]}
+                    ]
+                }
+                ]
+            });
+            chart.render();
+        }
         //bar Graph
-        function drawBarGraph() {
-            //gets the species_sales data
-            var arraySpecies_sales = []
-            
-            for(let i = 0; i < Object.keys(result.species_sales).length; i++){
-                arraySpecies_sales.push(Object.values(result.species_sales)[i]);
-            };
-            
+        function drawBarGraph(array) {
+
         	var chart = new CanvasJS.Chart("chartBarContainer", {
         		title:{
         			text: "Species Sales"              
@@ -118,13 +243,13 @@
         			// Change type to "doughnut", "line", "splineArea", etc.
         			type: "bar",
         			dataPoints: [
-        				{ label: "leatherback turtle",  y: arraySpecies_sales[0]},
-        				{ label: "salmon", y: arraySpecies_sales[1]},
-                        { label: "seahorse", y: arraySpecies_sales[2]},
-                        { label: "coral", y: arraySpecies_sales[3]},
-                        { label: "giant clam", y: arraySpecies_sales[4]},
-                        { label: "gray whale", y: arraySpecies_sales[5]},
-                        { label: "sea lion", y: arraySpecies_sales[6]}
+        				{ label: "leatherback turtle",  y: array[0]},
+        				{ label: "salmon", y: array[1]},
+                        { label: "seahorse", y: array[2]},
+                        { label: "coral", y: array[3]},
+                        { label: "giant clam", y: array[4]},
+                        { label: "gray whale", y: array[5]},
+                        { label: "sea lion", y: array[6]}
         			]
         		}
         		]
