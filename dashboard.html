@@ -2,39 +2,68 @@
     <head>
         <meta charset="utf-8"/>
         <style>
-
+            div.container{
+                position: relative;
+            }
+            div.menu{
+                width:100%;
+                height: 100px;
+                display: flex;
+                flex-grow: 1;
+                background-color: green;
+                background-image: url('assets/menuBackground.jpg');
+                background-size: 100% 100%;
+            }
+            div > li{
+                list-style: none;
+                display: inline-block;
+                padding: 10px;
+            }
+            div.charts{
+                float:left;
+            }
+            div#tableofsales{
+                float: right;
+            }
         </style>
     </head>
     <body>
-        <div class= "menu">
-            <li>
-                <input type="file" id="selectFiles" value="Import" /><br />
-                <button id="import">Import</button>
-            </li>
-            <li>
-                <!--Put here your filters, just add another li's if you have more filters-->
-            </li>
-        </div>
-
-        <br>
-
-        <div class= "charts">
-            <div id ="chartLineContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>></div>
-            <div id ="chartLineContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>></div>
-            <div id ="chartLineContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>></div>
-            <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
-            <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
-        </div>
-
-        <div id= "tableofsales">
-            <table align = "center" border = 1px id = "tbler">
-                <tr>
-                    <th>Date</th>
-                    <th>Burger</th>
-                    <th>Species</th>
-                    
-                </tr>
-            </table>
+        <div class="container">
+            <div class= "menu">
+                <li>
+                    Upload a JSON file.
+                </li>
+                <li id="upload">
+                    <input type="file" id="selectFiles" value="Import" /><br />
+                    <button id="import">Import</button>
+                </li>
+                <li>
+                    <!--Design-->
+                </li>
+            </div>
+        
+            <br>
+        
+            <div class= "charts">
+                <div id ="chartLineContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>></div>
+                <div id ="chartLineContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>></div>
+                <div id ="chartLineContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>></div>
+                <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
+                <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
+            </div>
+        
+            <div id= "tableofsales">
+                <table align = "center" border = 1px id = "tbler">
+                    <tr>
+                        <th>Date</th>
+                        <th>Burger</th>
+                        <th>Species</th>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <!--just put your filters here-->
+            </div>
         </div>
         
         <!-- JAVASCRIPT -->
