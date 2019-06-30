@@ -19,9 +19,6 @@
                 display: inline-block;
                 padding: 10px;
             }
-            div.charts{
-                float:left;
-            }
             div#tableofsales{
                 float: right;
             }
@@ -45,9 +42,9 @@
             <br>
         
             <div class= "charts">
-                <div id ="chartLineContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>></div>
-                <div id ="chartLineContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>></div>
-                <div id ="chartLineContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>></div>
+                <div id ="chartDoughnutContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>></div>
+                <div id ="chartDoughnutContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>></div>
+                <div id ="chartDoughnutContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>></div>
                 <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
                 <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
             </div>
@@ -79,8 +76,8 @@
             
         var result; // GLOBAL VARIABLE OF THE JSON OBJECT
         var tablecr;
-        var arr2 = [];
-        var arr3 = [];
+        var arr2 = []; // ALL SALES
+        var arr3 = []; //FILTERED SALES
         
             //clears the values from the text input box
         $("#startdate").val("")
@@ -105,9 +102,9 @@
                 var chen = Object.values(result.sales);
                 drawColumnChart(getBurgerSales());//calls function draw ColumnChart
                 drawBarGraph(getSpeciesSales()); // calls function draw BarGraph
-                drawLineChartKrabbyPattie(getKrabbyPattieSpecie())// calls function Line Graph
-                drawLineChartKrabbyDeluxe(getKrabbyDeluxeSpecie())// calls function Line Graph
-                drawLineChartKrabbyCombo(getKrabbyComboSpecie())// calls function Line Graph
+                drawDoughnutChartKrabbyPattie(getKrabbyPattieSpecie())// calls function Doughnut Graph
+                drawDoughnutChartKrabbyDeluxe(getKrabbyDeluxeSpecie())// calls function Doughnut Graph
+                drawDoughnutChartKrabbyCombo(getKrabbyComboSpecie())// calls function Doughnut Graph
                 drawTable();    //calls function table
 
                 //var sample = Object.values(result.burger_by_species)[0];
@@ -254,21 +251,20 @@
         //gets the burgers by species data (KRABBY PATTIE)
         function getKrabbyPattieSpecie(){
             
-            var krabbypattie = Object.values(result.burger_by_species)[0];
-            
+            var krabbypattie = Object.values(result.burger_by_species)[1];
             return krabbypattie;
         }
         //gets the burgers by species data (DELUXE)
         function getKrabbyDeluxeSpecie(){
             
-            var krabbydeluxe = Object.values(result.burger_by_species)[1];
+            var krabbydeluxe = Object.values(result.burger_by_species)[2];
             
             return krabbydeluxe;
         }
         //gets the burgers by species data (COMBO)
         function getKrabbyComboSpecie(){
             
-            var krabbycombo= Object.values(result.burger_by_species)[2];
+            var krabbycombo= Object.values(result.burger_by_species)[0];
             
             return krabbycombo;
         }
@@ -294,87 +290,84 @@
         	});
         	chart.render();
         }
-        //lineChart(Krabby Pattie)
-        function drawLineChartKrabbyPattie(array) {
+        //DoughnutChart(Krabby Pattie)
+        function drawDoughnutChartKrabbyPattie(array) {
+            var chart = new CanvasJS.Chart("chartDoughnutContainerKrabbyPattie",
 
-            console.log("Check " + Object.values(result)[0]);
-        	var chart = new CanvasJS.Chart("chartLineContainerKrabbyPattie", {
-        		title:{
-        			text: "Krabby Pattie Sales by Species"              
-        		},
-        		data: [              
-        		{
-        			// Change type to "doughnut", "line", "splineArea", etc.
-        			type: "line",
-                   
-        			dataPoints: [
-        				{ label: "leatherback turtle",  y: Object.values(array)[0]},
-        				{ label: "salmon", y: Object.values(array)[1]},
-                        { label: "seahorse", y: Object.values(array)[2]},
-                        { label: "coral", y: Object.values(array)[3]},
-                        { label: "giant clam", y: Object.values(array)[4]},
-                        { label: "gray whale", y: Object.values(array)[5]},
-        				{ label: "sea lion", y: Object.values(array)[6]}
-        			]
-        		}
-        		]
-        	});
-        	chart.render();
-        }
-        //lineChart(Krabby Deluxe)
-        function drawLineChartKrabbyDeluxe(array) {
-
-            console.log("Check " + Object.values(result)[0]);
-            var chart = new CanvasJS.Chart("chartLineContainerKrabbyDeluxe", {
-                title:{
-                    text: "Krabby Deluxe Sales by Species"              
-                },
-                data: [              
-                {
-                    // Change type to "doughnut", "line", "splineArea", etc.
-                    type: "line",
-                
-                    dataPoints: [
-                        { label: "leatherback turtle",  y: Object.values(array)[0]},
-                        { label: "salmon", y: Object.values(array)[1]},
-                        { label: "seahorse", y: Object.values(array)[2]},
-                        { label: "coral", y: Object.values(array)[3]},
-                        { label: "giant clam", y: Object.values(array)[4]},
-                        { label: "gray whale", y: Object.values(array)[5]},
-                        { label: "sea lion", y: Object.values(array)[6]}
-                    ]
-                }
-                ]
-            });
+            {
+              title:{
+                text: "Krabby Pattie Sales by Species"  
+              },
+              data: [
+              {
+               type: "doughnut",
+               dataPoints: [
+               {  y: getPercentage(Object.values(array)[0], getTotal(array)), indexLabel: "leatherback turtle" },
+               {  y: getPercentage(Object.values(array)[1], getTotal(array)), indexLabel: "salmon"},
+               {  y: getPercentage(Object.values(array)[2], getTotal(array)), indexLabel: "seahorse"},
+               {  y: getPercentage(Object.values(array)[3], getTotal(array)), indexLabel: "coral" },
+               {  y: getPercentage(Object.values(array)[4], getTotal(array)), indexLabel: "giant clam" },
+               {  y: getPercentage(Object.values(array)[5], getTotal(array)), indexLabel: "gray whale" },
+               {  y: getPercentage(Object.values(array)[6], getTotal(array)), indexLabel: "sea lion" }
+               ]
+             }
+             ]
+           });
+       
             chart.render();
-        }
-        //lineChart(Krabby Combo)
-        function drawLineChartKrabbyCombo(array) {
-                    
-            console.log("Check " + Object.values(result)[0]);
-            var chart = new CanvasJS.Chart("chartLineContainerKrabbyCombo", {
-                title:{
-                    text: "Krabby Combo Sales by Species"              
-                },
-                data: [              
-                {
-                    // Change type to "doughnut", "line", "splineArea", etc.
-                    type: "line",
-                
-                    dataPoints: [
-                        { label: "leatherback turtle",  y: Object.values(array)[0]},
-                        { label: "salmon", y: Object.values(array)[1]},
-                        { label: "seahorse", y: Object.values(array)[2]},
-                        { label: "coral", y: Object.values(array)[3]},
-                        { label: "giant clam", y: Object.values(array)[4]},
-                        { label: "gray whale", y: Object.values(array)[5]},
-                        { label: "sea lion", y: Object.values(array)[6]}
-                    ]
-                }
-                ]
-            });
+          }
+        //DoughnutChart(Krabby Deluxe)
+        function drawDoughnutChartKrabbyDeluxe(array) {
+            var chart = new CanvasJS.Chart("chartDoughnutContainerKrabbyDeluxe",
+            
+            {
+              title:{
+                text: "Krabby Deluxe Sales by Species"  
+              },
+              data: [
+              {
+               type: "doughnut",
+               dataPoints: [
+               {  y: getPercentage(Object.values(array)[0], getTotal(array)), indexLabel: "leatherback turtle" },
+               {  y: getPercentage(Object.values(array)[1], getTotal(array)), indexLabel: "salmon"},
+               {  y: getPercentage(Object.values(array)[2], getTotal(array)), indexLabel: "seahorse"},
+               {  y: getPercentage(Object.values(array)[3], getTotal(array)), indexLabel: "coral" },
+               {  y: getPercentage(Object.values(array)[4], getTotal(array)), indexLabel: "giant clam" },
+               {  y: getPercentage(Object.values(array)[5], getTotal(array)), indexLabel: "gray whale" },
+               {  y: getPercentage(Object.values(array)[6], getTotal(array)), indexLabel: "sea lion" }
+               ]
+             }
+             ]
+           });
+       
             chart.render();
-        }
+          }
+        //DoughnutChart(Krabby Combo)
+        function drawDoughnutChartKrabbyCombo(array) {
+            var chart = new CanvasJS.Chart("chartDoughnutContainerKrabbyCombo",
+            
+            {
+              title:{
+                text: "Krabby Combo Sales by Species"  
+              },
+              data: [
+              {
+               type: "doughnut",
+               dataPoints: [
+               {  y: getPercentage(Object.values(array)[0], getTotal(array)), indexLabel: "leatherback turtle" },
+               {  y: getPercentage(Object.values(array)[1], getTotal(array)), indexLabel: "salmon"},
+               {  y: getPercentage(Object.values(array)[2], getTotal(array)), indexLabel: "seahorse"},
+               {  y: getPercentage(Object.values(array)[3], getTotal(array)), indexLabel: "coral" },
+               {  y: getPercentage(Object.values(array)[4], getTotal(array)), indexLabel: "giant clam" },
+               {  y: getPercentage(Object.values(array)[5], getTotal(array)), indexLabel: "gray whale" },
+               {  y: getPercentage(Object.values(array)[6], getTotal(array)), indexLabel: "sea lion" }
+               ]
+             }
+             ]
+           });
+       
+            chart.render();
+          }
         //bar Graph
         function drawBarGraph(array) {
 
@@ -429,7 +422,21 @@
         }
             arr3 = []
             console.log(arr3.length + " length")
-        }    
+        }
+        //Gets percentage value
+        function getPercentage(value, total){
+            let percent = value / total;
+            percent = percent*100;
+            return percent;
+        }
+        // gets total value of a json object
+        function getTotal(array){
+            let sum = 0;
+            for(let i = 0; i < Object.keys(array).length; i++) {
+               sum = sum + Object.values(array)[i];
+            }
+            return sum;
+        }     
         </script>
         
     </body>
