@@ -42,9 +42,9 @@
             <br>
         
             <div class= "charts">
-                <div id ="chartDoughnutContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>></div>
-                <div id ="chartDoughnutContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>></div>
-                <div id ="chartDoughnutContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>></div>
+                <div id ="chartDoughnutContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>
+                <div id ="chartDoughnutContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>
+                <div id ="chartDoughnutContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>
                 <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
                 <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
             </div>
@@ -106,7 +106,6 @@
                 drawDoughnutChartKrabbyDeluxe(getKrabbyDeluxeSpecie())// calls function Doughnut Graph
                 drawDoughnutChartKrabbyCombo(getKrabbyComboSpecie())// calls function Doughnut Graph
                 drawTable();    //calls function table
-
                 //var sample = Object.values(result.burger_by_species)[0];
             
                 //console.log(Object.values(sample)[0])
@@ -122,17 +121,19 @@
                 
                 console.log(array[2].burger);
                 */
-                console.log($("#tbler tr").length + "HUM")            }
+                           }
             
             fr.readAsText(files.item(0));
             //event when the values of the input text boxes are changed
             $("#startdate").change(function() {
+                
+                
                 filtersequence()
-                arr3 = []
+                
             })
             $("#enddate").change(function() {
                 filtersequence()
-                arr3 = []
+                
             })
             
             
@@ -140,15 +141,21 @@
             //calls the sequence of the filtering of table starting from startdate to enddate
         function filtersequence() {
             let startdate2 = $.trim($("#startdate").val())
-            clearrows()
-            if (startdate2 != "") {
-               console.log("Jun")
-               filteredstartdaterows()
-            }
             let enddate2 = $.trim($("#enddate").val())
-            if (enddate2 != "") {
-               console.log("Jan")
-               
+            clearrows()
+            arr3 = arr2
+            if (startdate2 != "" || enddate2 != "") {
+                if (startdate2 != "") {
+                
+                    console.log("Jun")
+                    filteredstartdaterows()
+                }
+                
+                if (enddate2 != "") {
+                
+                    console.log("Jan")
+                    filteredenddate()
+                }
             }
             addrows()
             arr3 = []
@@ -174,12 +181,12 @@
             let day1 = $("#startdate").val().substring(8, 10), day2
             let hour1 = $("#startdate").val().substring(11, 13), hour2
             let min1 = $("#startdate").val().substring(14, 16), min2
-            for (let i = 0; i < Object.keys(arr2).length; i++) {
-                year2 = arr2[i].datetime.substring(0, 4)
-                month2 = arr2[i].datetime.substring(5, 7)
-                day2 = arr2[i].datetime.substring(8, 10)
-                hour2 = arr2[i].datetime.substring(11, 13)
-                min2 = arr2[i].datetime.substring(14, 16)
+            for (let i = 0; i < arr3.length; i++) {
+                year2 = arr3[i].datetime.substring(0, 4)
+                month2 = arr3[i].datetime.substring(5, 7)
+                day2 = arr3[i].datetime.substring(8, 10)
+                hour2 = arr3[i].datetime.substring(11, 13)
+                min2 = arr3[i].datetime.substring(14, 16)
                 
                 
                 if (parseInt(year1) == parseInt(year2)){
@@ -188,41 +195,80 @@
                         if (parseInt(day1) == parseInt(day2)) {
                             if (parseInt(hour1) == parseInt(hour2)) {
                                 if (parseInt(min1) <= parseInt(min2)) {
-                                    arr4.push(arr2[i]) 
+                                    arr4.push(arr3[i]) 
                                 }
                                 
                             }
                             else if (parseInt(hour1) < parseInt(hour2)) {
-                                arr4.push(arr2[i]) 
+                                arr4.push(arr3[i]) 
                             }  
                         }
                         else if (parseInt(day1) < parseInt(day2)) {
-                            arr4.push(arr2[i]) 
+                            arr4.push(arr3[i]) 
                         }    
                         
                     }
                     else if (parseInt(month1) < parseInt(month2)) {
-                        arr4.push(arr2[i]) 
+                        arr4.push(arr3[i]) 
                     }   
                 }
                 else if (parseInt(year1) < parseInt(year2)) {
-                    arr4.push(arr2[i])    
+                    arr4.push(arr3[i])    
                 }
             }
             
+            arr3 = []
             arr3 = arr4
             
                 
         }
             //filters the array of dates(arr3) that has a date which is equivalent or less than the selected enddate
         function filteredenddate() {
-            let numarr3 = arr3.length
-            if (numarr3 == 0) {
+            let arr4 = []
+            console.log("end " + arr3.length)
+            let year1 = $("#enddate").val().substring(0, 4), year2
+            let month1 = $("#enddate").val().substring(5, 7), month2
+            let day1 = $("#enddate").val().substring(8, 10), day2
+            let hour1 = $("#enddate").val().substring(11, 13), hour2
+            let min1 = $("#enddate").val().substring(14, 16), min2
+            for (let i = 0; i < arr3.length; i++) {
+                year2 = arr3[i].datetime.substring(0, 4)
+                month2 = arr3[i].datetime.substring(5, 7)
+                day2 = arr3[i].datetime.substring(8, 10)
+                hour2 = arr3[i].datetime.substring(11, 13)
+                min2 = arr3[i].datetime.substring(14, 16)
                 
-            }
-            else {
                 
+                if (parseInt(year1) == parseInt(year2)){
+                    
+                    if (parseInt(month2) == parseInt(month1)) {
+                        if (parseInt(day1) == parseInt(day2)) {
+                            if (parseInt(hour1) == parseInt(hour2)) {
+                                if (parseInt(min1) >= parseInt(min2)) {
+                                    arr4.push(arr3[i]) 
+                                }
+                                
+                            }
+                            else if (parseInt(hour1) > parseInt(hour2)) {
+                                arr4.push(arr3[i]) 
+                            }  
+                        }
+                        else if (parseInt(day1) > parseInt(day2)) {
+                            arr4.push(arr3[i]) 
+                        }    
+                        
+                    }
+                    else if (parseInt(month1) > parseInt(month2)) {
+                        arr4.push(arr3[i]) 
+                    }   
+                }
+                else if (parseInt(year1) > parseInt(year2)) {
+                    arr4.push(arr3[i])    
+                }
             }
+            
+            arr3 = []
+            arr3 = arr4
         }
       
         //gets the burgersales data
@@ -234,7 +280,6 @@
                 arrayBurger_sales.push(Object.values(result.burger_sales)[i]);
                 
             };
-
             return arrayBurger_sales;
         }
         //gets the species sales data
@@ -245,7 +290,6 @@
             for(let i = 0; i < Object.keys(result.species_sales).length; i++){
                 arraySpecies_sales.push(Object.values(result.species_sales)[i]);
             };
-
             return arraySpecies_sales;
         }
         //gets the burgers by species data (KRABBY PATTIE)
@@ -293,7 +337,6 @@
         //DoughnutChart(Krabby Pattie)
         function drawDoughnutChartKrabbyPattie(array) {
             var chart = new CanvasJS.Chart("chartDoughnutContainerKrabbyPattie",
-
             {
               title:{
                 text: "Krabby Pattie Sales by Species"  
@@ -370,7 +413,6 @@
           }
         //bar Graph
         function drawBarGraph(array) {
-
         	var chart = new CanvasJS.Chart("chartBarContainer", {
         		title:{
         			text: "Species Sales"              
