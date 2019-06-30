@@ -51,7 +51,9 @@
                 <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
                 <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
             </div>
-        
+            <h1>Filter Date</h1>
+            <input type = "text" id = "startdate"> to
+            <input type = "text" id = "enddate">
             <div id= "tableofsales">
                 <table align = "center" border = 1px id = "tbler">
                     <tr>
@@ -69,12 +71,26 @@
         <!-- JAVASCRIPT -->
         
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <link rel = "stylesheet" href = "jquery.datetimepicker.min.css">
+        <script src = "jquery.js"></script>
+        <script src = "jquery.datetimepicker.full.min.js"></script>
         <script type="text/javascript">
         
+            
         var result; // GLOBAL VARIABLE OF THE JSON OBJECT
         var tablecr;
+        var arr2 = [];
+        var arr3 = [];
+        
+            //clears the values from the text input box
+        $("#startdate").val("")
+        $("#enddate").val("")
         //This reads the uploaded jsonfile
         document.getElementById('import').onclick = function() {
+            //serves as a function to make a date and time picker on the text input boxes
+            $("#startdate").datetimepicker()
+            $("#enddate").datetimepicker()
+            
             var files = document.getElementById('selectFiles').files;
             console.log(files);
             if (files.length <= 0) {
@@ -109,10 +125,109 @@
                 
                 console.log(array[2].burger);
                 */
-            }
+                console.log($("#tbler tr").length + "HUM")            }
             
             fr.readAsText(files.item(0));
+            //event when the values of the input text boxes are changed
+            $("#startdate").change(function() {
+                filtersequence()
+                arr3 = []
+            })
+            $("#enddate").change(function() {
+                filtersequence()
+                arr3 = []
+            })
+            
+            
         };
+            //calls the sequence of the filtering of table starting from startdate to enddate
+        function filtersequence() {
+            let startdate2 = $.trim($("#startdate").val())
+            clearrows()
+            if (startdate2 != "") {
+               console.log("Jun")
+               filteredstartdaterows()
+            }
+            let enddate2 = $.trim($("#enddate").val())
+            if (enddate2 != "") {
+               console.log("Jan")
+               
+            }
+            addrows()
+            arr3 = []
+        }
+      
+        //erases the rows below the header
+        function clearrows() {
+            let rownumb = $("#tbler tr").length
+            for (let i = 2; i <= rownumb; i++) {
+                let numleft = $("#tbler tr").length;
+                if (numleft != 1) {
+                    document.getElementById("tbler").deleteRow(1)
+                }
+                
+            }
+        }
+            //filters the array of sales(arr3) that has a date equivalent or greater than the selected startdate
+        function filteredstartdaterows() {
+            console.log("Start date")
+            let arr4 = []
+            let year1 = $("#startdate").val().substring(0, 4), year2
+            let month1 = $("#startdate").val().substring(5, 7), month2
+            let day1 = $("#startdate").val().substring(8, 10), day2
+            let hour1 = $("#startdate").val().substring(11, 13), hour2
+            let min1 = $("#startdate").val().substring(14, 16), min2
+            for (let i = 0; i < Object.keys(arr2).length; i++) {
+                year2 = arr2[i].datetime.substring(0, 4)
+                month2 = arr2[i].datetime.substring(5, 7)
+                day2 = arr2[i].datetime.substring(8, 10)
+                hour2 = arr2[i].datetime.substring(11, 13)
+                min2 = arr2[i].datetime.substring(14, 16)
+                
+                
+                if (parseInt(year1) == parseInt(year2)){
+                    
+                    if (parseInt(month2) == parseInt(month1)) {
+                        if (parseInt(day1) == parseInt(day2)) {
+                            if (parseInt(hour1) == parseInt(hour2)) {
+                                if (parseInt(min1) <= parseInt(min2)) {
+                                    arr4.push(arr2[i]) 
+                                }
+                                
+                            }
+                            else if (parseInt(hour1) < parseInt(hour2)) {
+                                arr4.push(arr2[i]) 
+                            }  
+                        }
+                        else if (parseInt(day1) < parseInt(day2)) {
+                            arr4.push(arr2[i]) 
+                        }    
+                        
+                    }
+                    else if (parseInt(month1) < parseInt(month2)) {
+                        arr4.push(arr2[i]) 
+                    }   
+                }
+                else if (parseInt(year1) < parseInt(year2)) {
+                    arr4.push(arr2[i])    
+                }
+            }
+            
+            arr3 = arr4
+            
+                
+        }
+            //filters the array of dates(arr3) that has a date which is equivalent or less than the selected enddate
+        function filteredenddate() {
+            let numarr3 = arr3.length
+            if (numarr3 == 0) {
+                
+            }
+            else {
+                
+            }
+        }
+      
         //gets the burgersales data
         function getBurgerSales(){
             
@@ -285,26 +400,36 @@
         	});
         	chart.render();
         }
+            
         function drawTable() {
             console.log("Table");
-            var tbl = document.getElementById("tbler");   
-            var arr2 = [];  //calls an array variable
+              
+            
             for (let i = 0; i < Object.keys(result.sales).length; i++) {
                arr2.push(Object.values(result.sales)[i]);   //places the array data from the sales array 
             }
+            arr3 = arr2;
             console.log("Checker " + arr2.length);
-            for (let j = 0; j < arr2.length; j++) {
+            addrows();
+            
+         
+        }
+            //add the values of array arr3 in a row
+        function addrows() {
+            var tbl = document.getElementById("tbler"); 
+            for (let j = 0; j < arr3.length; j++) {
              var row = tbl.insertRow();             //for every loop, a row will be initialized
                 var cel1 = row.insertCell();        //adder of a cell in each column
                 var cel2 = row.insertCell();
                 var cel3 = row.insertCell();
                 
-                cel1.innerHTML = arr2[j].datetime;  //places the string from the array according to the specific variable
-                cel2.innerHTML = arr2[j].burger;
-                cel3.innerHTML = arr2[j].species;
+                cel1.innerHTML = arr3[j].datetime;  //places the string from the array according to the specific variable
+                cel2.innerHTML = arr3[j].burger;
+                cel3.innerHTML = arr3[j].species;
         }
-         
-        }
+            arr3 = []
+            console.log(arr3.length + " length")
+        }    
         </script>
         
     </body>
