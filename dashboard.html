@@ -34,11 +34,46 @@
             div.charts{
                 display: block;
                 position: relative;
+                width: 1000px;
             }
             div#tableofsales{
                 position:absolute;
                 top: 100px;
                 right: 0px;
+            }
+            @media all and (max-width: 1300px){
+                div#tableofsales{
+                    position: relative;
+                    width:100%;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                }
+                div.charts{
+                    display: block;
+                    position: relative;
+                    width: 100%;
+                }
+            }
+            @media all and (max-width: 800px){
+                div#tableofsales{
+                   position: relative;
+                }
+                div.charts{
+                    display: block;
+                    position: relative;
+                    width: 100%;
+                }
+            }
+            @media all and (max-width: 600px){
+                div#tableofsales{
+                   position: relative;
+                }
+                div.charts{
+                    display: block;
+                    position: relative;
+                    width: 100%;
+                }
             }
         </style>
     </head>
@@ -56,29 +91,17 @@
                     <!--Design-->
                 </li>
             </div>
-            <!--
-            <div class= "charts">
-                <div id ="chartDoughnutContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>
-                <div id ="chartDoughnutContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>
-                <div id ="chartDoughnutContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>
-                <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
-                <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
-                <div id="chartColumnContainerTable" style="height: 300px; width: 500px;"></div>
-                <div id="chartBarContainerTable" style="height: 300px; width: 500px;"></div>
-
-            </div>
-            -->
             <div class="container2">
                 <h1>Filter Date</h1>
                 <input type = "text" id = "startdate"> to
                 <input type = "text" id = "enddate">
                 <br>
                 <div class="charts">
-                    <div id ="chartDoughnutContainerKrabbyPattieTable" style="height: 300px; width: 1000px; position: relative;"></div>
-                    <div id ="chartDoughnutContainerKrustyDeluxeTable" style="height: 300px; width: 1000px; position: relative;"></div>
-                    <div id ="chartDoughnutContainerKrustyComboTable" style="height: 300px; width: 1000px; position: relative;""></div>
-                    <div id="chartColumnContainerTable" style="height: 300px; width: 1000px; position: relative;"></div>
-                    <div id="chartBarContainerTable" style="height: 300px; width: 1000px; position: relative;"></div>
+                    <div id ="chartDoughnutContainerKrabbyPattieTable" style="height: 300px; width: 100%; position: relative;"></div>
+                    <div id ="chartDoughnutContainerKrustyDeluxeTable" style="height: 300px; width: 100%; position: relative;"></div>
+                    <div id ="chartDoughnutContainerKrustyComboTable" style="height: 300px; width: 100%; position: relative;""></div>
+                    <div id="chartColumnContainerTable" style="height: 300px; width: 100% position: relative;"></div>
+                    <div id="chartBarContainerTable" style="height: 300px; width: 100%; position: relative;"></div>
                 </div>
                 <div id= "tableofsales">
                     <table align = "center" border = 1px id = "tbler">
