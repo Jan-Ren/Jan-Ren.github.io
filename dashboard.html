@@ -162,10 +162,11 @@
         //clears the values from the text input box
         $("#startdate").val("")
         $("#enddate").val("")
-        //This reads the uploaded jsonfile
+        //logout button
         document.getElementById('logout2').onclick = function() {
             window.location.href = "index.html"
         }
+        //This reads the uploaded jsonfile
         document.getElementById('import').onclick = function() {
         //serves as a function to make a date and time picker on the text input boxes
             $("#startdate").datetimepicker()
