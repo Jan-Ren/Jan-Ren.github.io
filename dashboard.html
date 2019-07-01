@@ -22,6 +22,19 @@
             div#tableofsales{
                 float: right;
             }
+            #chartBarContainerTable{
+                position:relative;
+            }
+            #chartColumnContainerTable{
+                position:relative;
+            }
+            div.container2{
+                display: relative;
+            }
+            div.charts{
+                display: block;
+                position: relative;
+            }
         </style>
     </head>
     <body>
@@ -38,30 +51,39 @@
                     <!--Design-->
                 </li>
             </div>
-        
-            <br>
-        
+            <!--
             <div class= "charts">
                 <div id ="chartDoughnutContainerKrabbyPattie" style="height: 300px; width: 100%;"></div>
                 <div id ="chartDoughnutContainerKrabbyDeluxe" style="height: 300px; width: 100%;"></div>
                 <div id ="chartDoughnutContainerKrabbyCombo" style="height: 300px; width: 100%;"></div>
                 <div id="chartColumnContainer" style="height: 300px; width: 100%;"></div>
                 <div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
+                <div id="chartColumnContainerTable" style="height: 300px; width: 500px;"></div>
+                <div id="chartBarContainerTable" style="height: 300px; width: 500px;"></div>
+
             </div>
-            <h1>Filter Date</h1>
-            <input type = "text" id = "startdate"> to
-            <input type = "text" id = "enddate">
-            <div id= "tableofsales">
-                <table align = "center" border = 1px id = "tbler">
-                    <tr>
-                        <th>Date</th>
-                        <th>Burger</th>
-                        <th>Species</th>
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <!--just put your filters here-->
+            -->
+            <div class="container2">
+                <h1>Filter Date</h1>
+                <input type = "text" id = "startdate"> to
+                <input type = "text" id = "enddate">
+                <br>
+                <div class="charts">
+                    <div id ="chartDoughnutContainerKrabbyPattieTable" style="height: 300px; width: 500px; position: relative;"></div>
+                    <div id ="chartDoughnutContainerKrustyDeluxeTable" style="height: 300px; width: 500px; position: relative;"></div>
+                    <div id ="chartDoughnutContainerKrustyComboTable" style="height: 300px; width: 500px; position: relative;""></div>
+                    <div id="chartColumnContainerTable" style="height: 300px; width: 500px; position: relative;"></div>
+                    <div id="chartBarContainerTable" style="height: 300px; width: 500px; position: relative;"></div>
+                </div>
+                <div id= "tableofsales">
+                    <table align = "center" border = 1px id = "tbler">
+                        <tr>
+                            <th>Date</th>
+                            <th>Burger</th>
+                            <th>Species</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         
@@ -79,12 +101,12 @@
         var arr2 = []; // ALL SALES
         var arr3 = []; //FILTERED SALES
         
-            //clears the values from the text input box
+        //clears the values from the text input box
         $("#startdate").val("")
         $("#enddate").val("")
         //This reads the uploaded jsonfile
         document.getElementById('import').onclick = function() {
-            //serves as a function to make a date and time picker on the text input boxes
+        //serves as a function to make a date and time picker on the text input boxes
             $("#startdate").datetimepicker()
             $("#enddate").datetimepicker()
             
@@ -95,16 +117,17 @@
             }
             var fr = new FileReader();
             fr.onload = function(e) { 
-                console.log("Hello world");
                 console.log(e);
                 
                 result = JSON.parse(e.target.result);
                 var chen = Object.values(result.sales);
-                drawColumnChart(getBurgerSales());//calls function draw ColumnChart
-                drawBarGraph(getSpeciesSales()); // calls function draw BarGraph
-                drawDoughnutChartKrabbyPattie(getKrabbyPattieSpecie())// calls function Doughnut Graph
-                drawDoughnutChartKrabbyDeluxe(getKrabbyDeluxeSpecie())// calls function Doughnut Graph
-                drawDoughnutChartKrabbyCombo(getKrabbyComboSpecie())// calls function Doughnut Graph
+                /*
+                drawColumnChart("chartColumnContainer",getBurgerSales());//calls function draw ColumnChart
+                drawBarGraph("chartBarContainer",getSpeciesSales()); // calls function draw BarGraph
+                drawDoughnutChartKrabbyPattie("chartDoughnutContainerKrabbyPattie", getKrabbyPattieSpecie())// calls function Doughnut Graph
+                drawDoughnutChartKrabbyDeluxe("chartDoughnutContainerKrabbyDeluxe" ,getKrabbyDeluxeSpecie())// calls function Doughnut Graph
+                drawDoughnutChartKrabbyCombo("chartDoughnutContainerKrabbyCombo" , getKrabbyComboSpecie())// calls function Doughnut Graph
+                */
                 drawTable();    //calls function table
                 //var sample = Object.values(result.burger_by_species)[0];
             
@@ -138,7 +161,7 @@
             
             
         };
-            //calls the sequence of the filtering of table starting from startdate to enddate
+        //calls the sequence of the filtering of table starting from startdate to enddate
         function filtersequence() {
             let startdate2 = $.trim($("#startdate").val())
             let enddate2 = $.trim($("#enddate").val())
@@ -146,20 +169,30 @@
             arr3 = arr2
             if (startdate2 != "" || enddate2 != "") {
                 if (startdate2 != "") {
-                
-                    console.log("Jun")
                     filteredstartdaterows()
                 }
                 
                 if (enddate2 != "") {
-                
-                    console.log("Jan")
                     filteredenddate()
                 }
+
+            //draw Charts for filtered sales data
+
+            //makes chart for burger sales
+            drawColumnChart("chartColumnContainerTable", makeBurgerSaleArray(arr3))
+            //makes chart for specie sales
+            drawBarGraph("chartBarContainerTable", makeSpeciesSaleArray(arr3))
+            //makes chart for burgerbyspecie (Krabby Pattie) sales
+            drawDoughnutChartKrabbyPattie("chartDoughnutContainerKrabbyPattieTable", makeBurgerBySpeciesSaleArrayKrabbyPattie(arr3))
+            //makes chart for burgerbyspecie (Krusty Deluxe) sales
+            drawDoughnutChartKrustyDeluxe("chartDoughnutContainerKrustyDeluxeTable", makeBurgerBySpeciesSaleArrayKrustyDeluxe(arr3))
+            //makes chart for burgerbyspecie (Krusty Combo) sales
+            drawDoughnutChartKrustyCombo("chartDoughnutContainerKrustyComboTable", makeBurgerBySpeciesSaleArrayKrustyCombo(arr3))
             }
             else {
                 drawTable()
             }
+
             addrows()
             arr3 = []
         }
@@ -177,7 +210,6 @@
         }
             //filters the array of sales(arr3) that has a date equivalent or greater than the selected startdate
         function filteredstartdaterows() {
-            console.log("Start date")
             let arr4 = []
             let year1 = $("#startdate").val().substring(0, 4), year2
             let month1 = $("#startdate").val().substring(5, 7), month2
@@ -228,7 +260,7 @@
             //filters the array of dates(arr3) that has a date which is equivalent or less than the selected enddate
         function filteredenddate() {
             let arr4 = []
-            console.log("end " + arr3.length)
+            //console.log("end " + arr3.length)
             let year1 = $("#enddate").val().substring(0, 4), year2
             let month1 = $("#enddate").val().substring(5, 7), month2
             let day1 = $("#enddate").val().substring(8, 10), day2
@@ -295,12 +327,14 @@
             };
             return arraySpecies_sales;
         }
+        
         //gets the burgers by species data (KRABBY PATTIE)
         function getKrabbyPattieSpecie(){
             
             var krabbypattie = Object.values(result.burger_by_species)[1];
             return krabbypattie;
         }
+        
         //gets the burgers by species data (DELUXE)
         function getKrabbyDeluxeSpecie(){
             
@@ -315,10 +349,42 @@
             
             return krabbycombo;
         }
+        // burger sales for table
+        function getBurgerSalesTable(burger, array){
+            let sum = 0;
+            for(let i = 0; i < Object.keys(array).length; i++){
+                if(array[i].burger == burger){
+                    sum = sum + 1;
+                }
+            }
+            return sum;
+        }
+        // specie sale for table
+        
+        function getSpeciesSalesTable(specie, array){
+            let sum = 0;
+            for(let i = 0; i < Object.keys(array).length; i++){
+                if(array[i].species == specie){
+                    sum = sum + 1;
+                }
+            }
+            return sum;
+        }
+        // burger by specie for table
+        function getBurgerBySpeciesSalesTable(burger, specie, array){
+            let sum = 0;
+            for(let i = 0; i < Object.keys(array).length; i++){
+                if(array[i].species == specie && array[i].burger == burger){
+                    sum = sum + 1;
+                }
+            }
+            return sum;
+        }
+        
         //column chart
-        function drawColumnChart(array) {
-            console.log("Check " + Object.values(result)[0]);
-        	var chart = new CanvasJS.Chart("chartColumnContainer", {
+        function drawColumnChart(chartName, array) {
+           // console.log("Check " + Object.values(result)[0]);
+        	var chart = new CanvasJS.Chart(chartName, {
         		title:{
         			text: "Burger Sales"              
         		},
@@ -338,8 +404,8 @@
         	chart.render();
         }
         //DoughnutChart(Krabby Pattie)
-        function drawDoughnutChartKrabbyPattie(array) {
-            var chart = new CanvasJS.Chart("chartDoughnutContainerKrabbyPattie",
+        function drawDoughnutChartKrabbyPattie(chartName,array) {
+            var chart = new CanvasJS.Chart(chartName,
             {
               title:{
                 text: "Krabby Pattie Sales by Species"  
@@ -363,12 +429,12 @@
             chart.render();
           }
         //DoughnutChart(Krabby Deluxe)
-        function drawDoughnutChartKrabbyDeluxe(array) {
-            var chart = new CanvasJS.Chart("chartDoughnutContainerKrabbyDeluxe",
+        function drawDoughnutChartKrustyDeluxe(chartName,array) {
+            var chart = new CanvasJS.Chart(chartName,
             
             {
               title:{
-                text: "Krabby Deluxe Sales by Species"  
+                text: "Krusty Deluxe Sales by Species"  
               },
               data: [
               {
@@ -389,12 +455,12 @@
             chart.render();
           }
         //DoughnutChart(Krabby Combo)
-        function drawDoughnutChartKrabbyCombo(array) {
-            var chart = new CanvasJS.Chart("chartDoughnutContainerKrabbyCombo",
+        function drawDoughnutChartKrustyCombo(chartName,array) {
+            var chart = new CanvasJS.Chart(chartName,
             
             {
               title:{
-                text: "Krabby Combo Sales by Species"  
+                text: "Krusty Combo Sales by Species"  
               },
               data: [
               {
@@ -415,8 +481,8 @@
             chart.render();
           }
         //bar Graph
-        function drawBarGraph(array) {
-        	var chart = new CanvasJS.Chart("chartBarContainer", {
+        function drawBarGraph(chartName, array) {
+        	var chart = new CanvasJS.Chart(chartName, {
         		title:{
         			text: "Species Sales"              
         		},
@@ -438,16 +504,89 @@
         	});
         	chart.render();
         }
-            
+        // Makes an array for burger sales
+        function makeBurgerSaleArray(array){
+            let arrayBurgerSales = []; 
+            arrayBurgerSales.push(getBurgerSalesTable("Krusty Combo", array))
+            arrayBurgerSales.push(getBurgerSalesTable("Krusty Deluxe", array))
+            arrayBurgerSales.push(getBurgerSalesTable("Krabby Pattie", array))
+            return arrayBurgerSales;
+        }
+        // Makes an array for specie sales
+        function makeSpeciesSaleArray(array){
+            let arraySpecieSales = []; 
+            arraySpecieSales.push(getSpeciesSalesTable("leatherback turtle", array))
+            arraySpecieSales.push(getSpeciesSalesTable("salmon", array))
+            arraySpecieSales.push(getSpeciesSalesTable("seahorse", array))
+            arraySpecieSales.push(getSpeciesSalesTable("coral", array))
+            arraySpecieSales.push(getSpeciesSalesTable("giant clam", array))
+            arraySpecieSales.push(getSpeciesSalesTable("gray whale", array))
+            arraySpecieSales.push(getSpeciesSalesTable("sea lion", array))
+
+            return arraySpecieSales;
+        }
+        // Makes an array for burger by specie (KRABBY PATTIE) sales !! Sequence of pushing by specie is important
+        function makeBurgerBySpeciesSaleArrayKrabbyPattie(array){
+            let arrayBurgerBySpeciesSales = [];
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krabby Pattie","leatherback turtle", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krabby Pattie","salmon", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krabby Pattie","seahorse", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krabby Pattie","coral", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krabby Pattie","giant clam", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krabby Pattie","gray whale", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krabby Pattie","sea lion", array))
+
+            return arrayBurgerBySpeciesSales;
+        }
+        // Makes an array for burger by specie (KRUSTY DELUXE) sales !! Sequence of pushing by specie is important
+        function makeBurgerBySpeciesSaleArrayKrustyDeluxe(array){
+            let arrayBurgerBySpeciesSales = [];
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Deluxe","leatherback turtle", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Deluxe","salmon", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Deluxe","seahorse", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Deluxe","coral", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Deluxe","giant clam", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Deluxe","gray whale", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Deluxe","sea lion", array))
+
+            return arrayBurgerBySpeciesSales;
+        }
+        // Makes an array for burger by specie (KRUSTY COMBO) sales !! Sequence of pushing by specie is important
+        function makeBurgerBySpeciesSaleArrayKrustyCombo(array){
+            let arrayBurgerBySpeciesSales = [];
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Combo","leatherback turtle", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Combo","salmon", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Combo","seahorse", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Combo","coral", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Combo","giant clam", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Combo","gray whale", array))
+            arrayBurgerBySpeciesSales.push(getBurgerBySpeciesSalesTable("Krusty Combo","sea lion", array))
+
+            return arrayBurgerBySpeciesSales;
+        }
         function drawTable() {
-            console.log("Table");
+            //console.log("Table");
               
             
             for (let i = 0; i < Object.keys(result.sales).length; i++) {
                arr2.push(Object.values(result.sales)[i]);   //places the array data from the sales array 
             }
             arr3 = arr2;
-            console.log("Checker " + arr2.length);
+            //console.log("Checker " + arr2.length);
+            //draw Charts for complete sales data
+
+            //makes chart for burger sales
+            drawColumnChart("chartColumnContainerTable", makeBurgerSaleArray(arr3))
+            //makes chart for specie sales
+            drawBarGraph("chartBarContainerTable", makeSpeciesSaleArray(arr3))
+            //makes chart for burgerbyspecie (Krabby Pattie) sales
+            drawDoughnutChartKrabbyPattie("chartDoughnutContainerKrabbyPattieTable", makeBurgerBySpeciesSaleArrayKrabbyPattie(arr3))
+            //makes chart for burgerbyspecie (Krusty Deluxe) sales
+            drawDoughnutChartKrustyDeluxe("chartDoughnutContainerKrustyDeluxeTable", makeBurgerBySpeciesSaleArrayKrustyDeluxe(arr3))
+            //makes chart for burgerbyspecie (Krusty Combo) sales
+            drawDoughnutChartKrustyCombo("chartDoughnutContainerKrustyComboTable", makeBurgerBySpeciesSaleArrayKrustyCombo(arr3))
+
+
             addrows();
             
          
@@ -466,7 +605,7 @@
                 cel3.innerHTML = arr3[j].species;
         }
             arr3 = []
-            console.log(arr3.length + " length")
+            //console.log(arr3.length + " length")
         }
         //Gets percentage value
         function getPercentage(value, total){
