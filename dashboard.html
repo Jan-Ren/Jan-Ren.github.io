@@ -5,6 +5,19 @@
             div.container{
                 position: relative;
             }
+            #logout {
+                
+                    width:900px
+            }
+            #logout2 {
+                
+                float:right
+                
+            }
+            #logout2 {
+                height:50px
+                   
+            }
             div.menu{
                 width:100%;
                 height: 100px;
@@ -101,10 +114,12 @@
                 <li id="upload">
                     <input type="file" id="selectFiles" value="Import" /><br />
                     <button id="import">Import</button>
+                    
                 </li>
                 <li>
                     <!--Design-->
                 </li>
+                <div id = "logout"><button id = "logout2">Log out</button></div>
             </div>
             <div class="container2">
                 <h1>Filter Date</h1>
@@ -114,7 +129,7 @@
                 <div class="charts">
                     <div id ="chartDoughnutContainerKrabbyPattieTable" style="height: 300px; width: 100%; position: relative;"></div>
                     <div id ="chartDoughnutContainerKrustyDeluxeTable" style="height: 300px; width: 100%; position: relative;"></div>
-                    <div id ="chartDoughnutContainerKrustyComboTable" style="height: 300px; width: 100%; position: relative;""></div>
+                    <div id ="chartDoughnutContainerKrustyComboTable" style="height: 300px; width: 100%; position: relative;"></div>
                     <div id="chartColumnContainerTable" style="height: 300px; width: 100%; position: relative;"></div>
                     <div id="chartBarContainerTable" style="height: 300px; width: 100%; position: relative;"></div>
                 </div>
@@ -148,6 +163,9 @@
         $("#startdate").val("")
         $("#enddate").val("")
         //This reads the uploaded jsonfile
+        document.getElementById('logout2').onclick = function() {
+            window.location.href = "index.html"
+        }
         document.getElementById('import').onclick = function() {
         //serves as a function to make a date and time picker on the text input boxes
             $("#startdate").datetimepicker()
