@@ -1,9 +1,48 @@
 <html>
     <head>
         <meta charset="utf-8"/>
+        <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/some-time-later" type="text/css"/> 
         <style>
             div.container{
                 position: relative;
+            }
+            #jsonupl, #selectFiles, #import, #tbler, .container2, #logout2, #startdate, #enddate {
+                font-family: 'SomeTimeLaterRegular'
+            }
+            #startdate {
+                height:30px;
+                width: 175px;
+                top:150px;
+                left:0px;
+              position:absolute
+              
+              
+            }
+            #to {
+               height:30px;
+                width: 100px;
+                top:155px;
+                left:190px;
+                position:absolute;
+                font-size:30px
+                
+            }
+            #enddate {
+                height:30px;
+                width: 175px;
+                top:150px;
+                left:230px;
+                position:absolute
+                
+            }
+            #checker {
+                height:30px;
+                width: 290px;
+                top:155px;
+                left:420px;
+                position:absolute;
+                font-size:30px;
+                
             }
             #logout {
                 
@@ -25,6 +64,7 @@
                 flex-grow: 1;
                 background-color: green;
                 background-image: url('assets/menuBackground.jpg');
+            
                 background-size: 100% 100%;
             }
             div > li{
@@ -108,7 +148,7 @@
     <body>
         <div class="container">
             <div class= "menu">
-                <li>
+                <li id = "jsonupl">
                     Upload a JSON file.
                 </li>
                 <li id="upload">
@@ -123,8 +163,8 @@
             </div>
             <div class="container2">
                 <h1>Filter Date</h1>
-                <input type = "text" id = "startdate"> to
-                <input type = "text" id = "enddate">
+                <input type = "text" id = "startdate"><div id = "to">to</div>
+                <input type = "text" id = "enddate"> <div id = "checker"></div>
                 <br>
                 <div class="charts">
                     <div id ="chartDoughnutContainerKrabbyPattieTable" style="height: 300px; width: 100%; position: relative;"></div>
@@ -158,15 +198,18 @@
         var tablecr;
         var arr2 = []; // ALL SALES
         var arr3 = []; //FILTERED SALES
-        
+        var krustysound;
         //clears the values from the text input box
         $("#startdate").val("")
         $("#enddate").val("")
-        //logout button
+            
+        krustysound = new Audio('assets/SpongeBob%20SquarePants%20Production%20Music%20-%20The%20Rake%20Hornpipe.mp3')
+        krustysound.play()
+        krustysound.loop = true
+        //This reads the uploaded jsonfile
         document.getElementById('logout2').onclick = function() {
             window.location.href = "index.html"
         }
-        //This reads the uploaded jsonfile
         document.getElementById('import').onclick = function() {
         //serves as a function to make a date and time picker on the text input boxes
             $("#startdate").datetimepicker()
@@ -254,6 +297,7 @@
             else {
                 drawTable()
             }
+            $("#checker").text("Total no. of sales " + arr3.length)
 
             addrows()
             arr3 = []
@@ -659,7 +703,7 @@
             drawDoughnutChartKrustyDeluxe("chartDoughnutContainerKrustyDeluxeTable", makeBurgerBySpeciesSaleArrayKrustyDeluxe(arr3))
             //makes chart for burgerbyspecie (Krusty Combo) sales
             drawDoughnutChartKrustyCombo("chartDoughnutContainerKrustyComboTable", makeBurgerBySpeciesSaleArrayKrustyCombo(arr3))
-
+            $("#checker").text("Total no. of sales: " + arr3.length)
 
             addrows();
             
