@@ -1,6 +1,23 @@
 <html>
     <head>
+        <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/some-time-later" type="text/css"/> 
         <style>
+            body, div.main_container{
+                height:100%;
+            }
+
+            body{
+                background-color: forestgreen;
+            }
+            div.main_container{
+                width:100%;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                background-image: url('assets/krustykrab.jpg');
+                background-size: 100% 100%;
+                font-family: 'SomeTimeLaterRegular'; 
+            }
             div.container{
                 font-size: 30px;
                 width: 400px;
@@ -10,6 +27,8 @@
                 position: relative;
                 justify-content: center;
                 align-items: center;
+                background-image: url('assets/happy.jpg');
+                background-size: 100% 100%;
             }
         </style>
 
@@ -30,16 +49,20 @@
 
     </head>
     <body>
-        <div class="container">
-            <div class="title"> Welcome to Kursty Krab </div>
-            <br>
-            <form class="login" onsubmit="return checker()">
-                username : <input type= "text" id="username">
+        <div class="main_container">
+            <div class="container">
+                <div class="title">Please Sign in</div>
                 <br>
-                password : <input type= "password" id="password">
+                <form class="login" onsubmit="return checker()">
+                    username : <input type= "text" id="username">
+                    <br>
+                    password : <input type= "password" id="password">
+                    <br>
+                    <input type = "submit" value= "Login">
+                </form>
                 <br>
-                <input type = "submit" value= "Login">
-            </form>
+                <div class="title">Welcome to Kursty Krab</div>
+            </div>
         </div>
     </body>
 </html>
