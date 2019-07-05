@@ -6,6 +6,10 @@
             div.container{
                 position: relative;
             }
+            #saleinfo:hover {
+                background-color:lightblue
+                    
+            }
             #jsonupl, #selectFiles, #import, #tbler, .container2, #logout2, #startdate, #enddate {
                 font-family: 'SomeTimeLaterRegular'
             }
@@ -198,14 +202,12 @@
         var tablecr;
         var arr2 = []; // ALL SALES
         var arr3 = []; //FILTERED SALES
-        var krustysound;
+    
         //clears the values from the text input box
         $("#startdate").val("")
         $("#enddate").val("")
             
-        krustysound = new Audio('assets/SpongeBob%20SquarePants%20Production%20Music%20-%20The%20Rake%20Hornpipe.mp3')
-        krustysound.play()
-        krustysound.loop = true
+        
         //This reads the uploaded jsonfile
         document.getElementById('logout2').onclick = function() {
             window.location.href = "index.html"
@@ -721,6 +723,7 @@
                 cel1.innerHTML = arr3[j].datetime;  //places the string from the array according to the specific variable
                 cel2.innerHTML = arr3[j].burger;
                 cel3.innerHTML = arr3[j].species;
+                row.id = "saleinfo"
         }
             arr3 = []
             //console.log(arr3.length + " length")
