@@ -1,5 +1,6 @@
 <html>
     <head>
+        <script src = "jquery.js"></script>
         <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/some-time-later" type="text/css"/> 
         <style>
             body, div.main_container{
@@ -33,18 +34,27 @@
         </style>
 
         <script type = "text/javascript">
-            function checker(){
-                var uname = document.getElementById("username").value;
-                var password = document.getElementById("password").value;
-                if (uname== "admin" && password== "p@ssword") {
-                    window.location.href = "dashboard.html";
-                    alert("Yehey");
-                    return;
-                }else{
-                    alert("Incorrect username or password");
-                    return;
+         $(document).ready(function(){
+                $("#login").submit(function (e){
+                    e.preventDefault()
+                    checker()
+                })
+                function checker(){
+                    var uname = document.getElementById("username").value;
+                    var password = document.getElementById("password").value;
+                    console.log(uname);
+                    console.log(password)
+                    if (uname== "admin" && password== "p@ssword") {
+                        window.location.href = "dashboard.html";
+                        return;
+                    }else{
+                        alert("Incorrect username or password");
+                        return;
+                    }
                 }
-            }
+                            
+            })
+            
         </script>
 
     </head>
@@ -53,12 +63,12 @@
             <div class="container">
                 <div class="title">Please Sign in</div>
                 <br>
-                <form class="login" onsubmit="return checker()">
+                <form id="login">
                     username : <input type= "text" id="username">
                     <br>
                     password : <input type= "password" id="password">
                     <br>
-                    <input type = "submit" value= "Login">
+                    <input id="submitButton" type = "submit" value= "Login">
                 </form>
                 <br>
                 <div class="title">Welcome to Kursty Krab</div>
