@@ -205,7 +205,8 @@
         var tablecr;
         var arr2 = []; // ALL SALES
         var arr3 = []; //FILTERED SALES
-    
+        var starindex;
+        var endindex;
         //clears the values from the text input box
         $("#startdate").val("")
         $("#enddate").val("")
@@ -293,18 +294,18 @@
             //makes chart for specie sales
             drawBarGraph("chartBarContainerTable", makeSpeciesSaleArray(arr3))
             //makes chart for burgerbyspecie (Krabby Pattie) sales
-            drawDoughnutChartKrabbyPattie("chartDoughnutContainerKrabbyPattieTable", makeBurgerBySpeciesSaleArrayKrabbyPattie(arr3))
+            drawBaKrabbyPattieGraph("chartDoughnutContainerKrabbyPattieTable", makeBurgerBySpeciesSaleArrayKrabbyPattie(arr3))
             //makes chart for burgerbyspecie (Krusty Deluxe) sales
-            drawDoughnutChartKrustyDeluxe("chartDoughnutContainerKrustyDeluxeTable", makeBurgerBySpeciesSaleArrayKrustyDeluxe(arr3))
+            drawBarKrustyDeluxeGraph("chartDoughnutContainerKrustyDeluxeTable", makeBurgerBySpeciesSaleArrayKrustyDeluxe(arr3))
             //makes chart for burgerbyspecie (Krusty Combo) sales
-            drawDoughnutChartKrustyCombo("chartDoughnutContainerKrustyComboTable", makeBurgerBySpeciesSaleArrayKrustyCombo(arr3))
+            drawBarKrustyComboGraph("chartDoughnutContainerKrustyComboTable", makeBurgerBySpeciesSaleArrayKrustyCombo(arr3))
             }
             else {
                 drawTable()
             }
             $("#checker").text("Total no. of sales " + arr3.length)
 
-            addrows()
+            addrows(0)
             arr3 = []
         }
       
@@ -603,6 +604,78 @@
        
             chart.render();
           }
+            //krabby pttie
+        function drawBarKrabbyPattieGraph(chartName, array) {
+        	var chart = new CanvasJS.Chart(chartName, {
+        		title:{
+        			text: "Krabby Pattie, Species by Sales"              
+        		},
+        		data: [              
+        		{
+        			// Change type to "doughnut", "line", "splineArea", etc.
+        			type: "bar",
+        			dataPoints: [
+        				{ label: "leatherback turtle",  y: array[0]},
+        				{ label: "salmon", y: array[1]},
+                        { label: "seahorse", y: array[2]},
+                        { label: "coral", y: array[3]},
+                        { label: "giant clam", y: array[4]},
+                        { label: "gray whale", y: array[5]},
+                        { label: "sea lion", y: array[6]}
+        			]
+        		}
+        		]
+        	});
+        	chart.render();
+        }
+            
+        function drawBarKrustyDeluxeGraph(chartName, array) {
+        	var chart = new CanvasJS.Chart(chartName, {
+        		title:{
+        			text: "Krusty Deluxe, Species by Sales"              
+        		},
+        		data: [              
+        		{
+        			// Change type to "doughnut", "line", "splineArea", etc.
+        			type: "bar",
+        			dataPoints: [
+        				{ label: "leatherback turtle",  y: array[0]},
+        				{ label: "salmon", y: array[1]},
+                        { label: "seahorse", y: array[2]},
+                        { label: "coral", y: array[3]},
+                        { label: "giant clam", y: array[4]},
+                        { label: "gray whale", y: array[5]},
+                        { label: "sea lion", y: array[6]}
+        			]
+        		}
+        		]
+        	});
+        	chart.render();
+        }
+            
+        function drawBarKrustyComboGraph(chartName, array) {
+        	var chart = new CanvasJS.Chart(chartName, {
+        		title:{
+        			text: "Krusty Combo, Species by Sales"              
+        		},
+        		data: [              
+        		{
+        			// Change type to "doughnut", "line", "splineArea", etc.
+        			type: "bar",
+        			dataPoints: [
+        				{ label: "leatherback turtle",  y: array[0]},
+        				{ label: "salmon", y: array[1]},
+                        { label: "seahorse", y: array[2]},
+                        { label: "coral", y: array[3]},
+                        { label: "giant clam", y: array[4]},
+                        { label: "gray whale", y: array[5]},
+                        { label: "sea lion", y: array[6]}
+        			]
+        		}
+        		]
+        	});
+        	chart.render();
+        }
         //bar Graph
         function drawBarGraph(chartName, array) {
         	var chart = new CanvasJS.Chart(chartName, {
@@ -703,19 +776,45 @@
             //makes chart for specie sales
             drawBarGraph("chartBarContainerTable", makeSpeciesSaleArray(arr3))
             //makes chart for burgerbyspecie (Krabby Pattie) sales
-            drawDoughnutChartKrabbyPattie("chartDoughnutContainerKrabbyPattieTable", makeBurgerBySpeciesSaleArrayKrabbyPattie(arr3))
+            drawBarKrabbyPattieGraph("chartDoughnutContainerKrabbyPattieTable", makeBurgerBySpeciesSaleArrayKrabbyPattie(arr3))
             //makes chart for burgerbyspecie (Krusty Deluxe) sales
-            drawDoughnutChartKrustyDeluxe("chartDoughnutContainerKrustyDeluxeTable", makeBurgerBySpeciesSaleArrayKrustyDeluxe(arr3))
+            drawBarKrustyDeluxeGraph("chartDoughnutContainerKrustyDeluxeTable", makeBurgerBySpeciesSaleArrayKrustyDeluxe(arr3))
             //makes chart for burgerbyspecie (Krusty Combo) sales
-            drawDoughnutChartKrustyCombo("chartDoughnutContainerKrustyComboTable", makeBurgerBySpeciesSaleArrayKrustyCombo(arr3))
+            drawBarKrustyComboGraph("chartDoughnutContainerKrustyComboTable", makeBurgerBySpeciesSaleArrayKrustyCombo(arr3))
             $("#checker").text("Total no. of sales: " + arr3.length)
 
-            addrows();
+            addrows(0);
             
          
         }
             //add the values of array arr3 in a row
-        function addrows() {
+        function addrows(numinfo) {
+            if (numinfo == 0) {
+                starindex = 0;
+                endindex = 5;
+            }
+            else if (numinfo == 1) {
+                //back
+                starindex = starindex - 5;
+                if (starindex < 0) {
+                    endindex = arr3.length;
+                    starindex = arr3.length - (arr3.length % 5);
+                }
+                else {
+                    endindex = starindex + 5;
+                }
+            }
+            else {
+                //forwards
+                starindex = starindex + 5;
+                if (starindex > arr3.length) {
+                    starindex = 0;
+                    endindex = 5;
+                }
+                else {
+                    
+                }
+            }
             var tbl = document.getElementById("tbler"); 
             for (let j = 0; j < arr3.length; j++) {
              var row = tbl.insertRow();             //for every loop, a row will be initialized
